@@ -79,13 +79,24 @@ export const getUser = async (req: Request, res: Response) => {
 // READ MANY
 export const getUsers = async (req: Request, res: Response) => {
 
+    const limit = parseInt(req.query.limit as string) || 10;
+    const page = parseInt(req.query.page as string) || 0;
+    //const sortBy = req.query.sortBy || "email";
+    const sortOrder = req.query.sortOrder as "asc" | "desc" || "desc";
+
     try {
         // const result = await query<User[]>(
         //     "SELECT * FROM users",
         //     []
         //   );
 
-        const result = await prisma.user.findMany();
+        const result = await prisma.user.findMany({
+            skip: page * limit,
+            take: limit,
+            orderBy: {
+                email: sortOrder
+            }
+        });
 
         if(result) {
             res.status(200).json({message: "Users fetched successfully", user: result});
