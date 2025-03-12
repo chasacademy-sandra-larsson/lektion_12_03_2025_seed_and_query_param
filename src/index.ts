@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import { prisma } from "./config/db"
 
 dotenv.config();
+console.log(process.env.DATABASE_URL)
 
 //const PORT = process.env.PORT || 3000;
 
